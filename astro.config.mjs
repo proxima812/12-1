@@ -15,44 +15,45 @@ import netlify from "@astrojs/netlify";
 
 // https://astro.build/config
 export default defineConfig({
-  site: `${config.site.base.url}`,
+	site: `${config.site.base.url}`,
 
-  prefetch: {
-      prefetchAll: true,
-      defaultStrategy: "viewport",
+	prefetch: {
+		prefetchAll: true,
+		defaultStrategy: "viewport",
 	},
 
-  integrations: [
-      keystatic(),
-      sitemap({
-          filter: page => page !== `${config.site.base.url}/test-page`,
-      }),
-      tailwind({
-          applyBaseStyles: false,
-      }),
-      compress(),
-      mdx(),
-      react(),
-      markdoc(),
-      partytown(),
+	integrations: [
+		keystatic(),
+		sitemap({
+			filter: page => page !== `${config.site.base.url}/test-page`,
+		}),
+		tailwind({
+			applyBaseStyles: false,
+		}),
+		compress(),
+		mdx(),
+		react(),
+		markdoc(),
+		partytown(),
 	],
 
-  vite: {
-      plugins: [
-          VitePWA({
-              registerType: "autoUpdate",
-              manifest,
-              workbox: {
-                  globDirectory: "dist",
-                  globPatterns: [
-                      "**/*.{js,css,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,ico}",
-                  ],
-                  navigateFallback: null,
-              },
-          }),
-      ],
+	vite: {
+		plugins: [
+			VitePWA({
+				registerType: "autoUpdate",
+				manifest,
+				workbox: {
+					globDirectory: "dist",
+					globPatterns: [
+						"**/*.{js,css,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,ico}",
+					],
+					globIgnores: ["**/*keystatic*"],
+					navigateFallback: null,
+				},
+			}),
+		],
 	},
 
-  output: "hybrid",
-  adapter: netlify(),
+	output: "hybrid",
+	adapter: netlify(),
 })
