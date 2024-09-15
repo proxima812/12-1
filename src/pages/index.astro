@@ -1,0 +1,47 @@
+---
+import Post from "@/components/Post.astro"
+import MainLayout from "@/layouts/MainLayout.astro"
+import { getCollection } from "astro:content"
+
+import Posts from "@/components/Posts"
+
+const posts = (await getCollection("posts"))
+	.filter(({ data }) => (import.meta.env.PROD ? data.draft !== true : true))
+	.sort((a, b) => +new Date(b.data.datePublished) - +new Date(a.data.datePublished))
+
+const postsCards = posts.filter(({ data }) => data.title.length <= 44)
+
+const articles = (await getCollection("posts"))
+	.filter(({ data }) => (import.meta.env.PROD ? data.draft !== true : true))
+	.sort((a, b) => +new Date(b.data.datePublished) - +new Date(a.data.datePublished))
+
+const articlesCards = articles.filter(({ data }) => data.title.length > 44)
+---
+
+<MainLayout
+	title="12 шагов | 12x12 - все о выздоровлении, восстановление. Принципы, шаги"
+>
+	<main class="grid grid-cols-1 gap-6 md:grid-cols-2">
+		<div>
+			<h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+				Посты <span class="text-zinc-600">({postsCards.length})</span>
+			</h2>
+			<section class="grid grid-cols-1 gap-6 md:grid-cols2">
+				{postsCards && postsCards.map(post => <Post data={post.data} slug={post.slug} />)}
+			</section>
+		</div>
+		<div>
+			<h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+				Статьи <span class="text-zinc-600">({articlesCards.length})</span>
+			</h2>
+			<section class="grid grid-cols-1 gap-6 md:grid-cols2">
+				{
+					articlesCards &&
+						articlesCards.map(post => <Post data={post.data} slug={post.slug} />)
+				}
+			</section>
+		</div>
+	</main>
+
+	
+</MainLayout>

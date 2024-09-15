@@ -1,0 +1,37 @@
+---
+import Date from "./Date.astro"
+
+const { data, slug } = Astro.props
+---
+
+<article
+	aria-label={data.title}
+	class="rounded-xl border border-zinc-200/60 bg-white p-6 flex flex-col"
+>
+	<div class="flex flex-col gap-2">
+		<span class="text-gray">{`${data.title.length <= 44 ? "ПОСТ" : "СТАТЬЯ"}`}</span>
+		<h2 class="text-2xl font-bold tracking-[-0.41px] leading-[26px]">{data.title}</h2>
+		<p class="leading-5">{data.description}</p>
+		<Date data={data} class="text-xs" />
+	</div>
+	<a
+		href={`${slug}`}
+		class="flex items-center-2 mt-6 self-start text-white rounded-lg px-2.5 py-1 bg-green"
+	>
+		Далее
+
+		<svg
+			width="17"
+			height="24"
+			viewBox="0 0 17 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				fill-rule="evenodd"
+				clip-rule="evenodd"
+				d="M5.29289 6.29289C4.90237 6.68342 4.90237 7.31658 5.29289 7.70711L9.58579 12L5.29289 16.2929C4.90237 16.6834 4.90237 17.3166 5.29289 17.7071C5.68342 18.0976 6.31658 18.0976 6.70711 17.7071L11.7071 12.7071C12.0976 12.3166 12.0976 11.6834 11.7071 11.2929L6.70711 6.29289C6.31658 5.90237 5.68342 5.90237 5.29289 6.29289Z"
+				fill="white"></path>
+		</svg>
+	</a>
+</article>

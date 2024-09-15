@@ -1,0 +1,90 @@
+---
+import Breadcrumbs from "@/components/Breadcrumbs.astro"
+import Footer from "@/components/partials/Footer.astro"
+import Header from "@/components/partials/Header.astro"
+import SEOHead from "@/components/SEOHead.astro"
+import { Schema } from "astro-seo-schema"
+
+import "@/styles/tailwind.css"
+import { ViewTransitions } from "astro:transitions"
+import { config } from "../settings"
+
+const {
+	datePublished,
+	dateModified,
+	noIndex,
+	name,
+	noManifest,
+	author,
+	title,
+	type,
+	description,
+	ogImage,
+	locale,
+	container_max_w,
+	canonicalURL = new URL(Astro.url.pathname, Astro.site),
+} = Astro.props
+---
+
+<html lang="ru" class="scroll-smooth">
+	<!-- Салам брат ты че как?
+ 
+все вопросы сюда ...
+-->
+	<head>
+		<SEOHead
+			noManifest
+			noIndex={noIndex}
+			title={title}
+			description={description}
+			name={name}
+			author={author}
+			type={type}
+			locale={locale}
+			ogImage={ogImage}
+			datePublished={datePublished}
+			dateModified={dateModified}
+			canonicalURL={canonicalURL}
+		/>
+		<ViewTransitions />
+		<Schema
+			item={{
+				"@context": "https://schema.org",
+				"@type": "BlogPosting",
+				headline: title,
+				description: description,
+				author: {
+					"@type": "Person",
+					name: "12 шагов | 12x12",
+				},
+				datePublished: datePublished,
+				dateModified: dateModified && "",
+				image: [""],
+				publisher: {
+					"@type": "Organization",
+					name: "12 шагов сайт",
+					logo: {
+						"@type": "ImageObject",
+						url: `${config.site.base.url}favicon.svg`,
+					},
+				},
+				url: `${config.site.base.url}${Astro.url.pathname}`,
+			}}
+		/>
+		<!-- Service worker registration. -->
+		<script is:inline src="/registerSW.js"></script>
+		<link rel="manifest" href="/manifest.webmanifest" />
+	</head>
+	<body class="flex min-h-screen flex-col text-zinc-800 bg-zinc-50">
+		<Header />
+		<main class:list={`${container_max_w ?? "max-w-6xl"} container mx-auto flex-1 px-5`}>
+			<aside class="px-2 py-1 rounded-b-md bg-zinc-900 max-w-fit">
+				<Breadcrumbs />
+			</aside>
+			<div class="flex flex-col gap-12 py-12">
+				<slot />
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>

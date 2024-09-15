@@ -1,0 +1,47 @@
+---
+import Date from '@/components/Date.astro'
+import MainLayout from "@/layouts/MainLayout.astro"
+import { getCollection } from "astro:content"
+
+export async function getStaticPaths() {
+	const posts = await getCollection("posts")
+	return posts.map(post => ({
+		params: { slug: post.slug },
+		props: post,
+	}))
+}
+const post = Astro.props
+const { Content } = await post.render()
+---
+
+<MainLayout {...post.data} type ogImage={post.data.ogImage?.src}>
+	<main id="my-iv-page" class="prose mx-auto prose-lg xl:prose-xl prose-blue">
+		<div
+			class:list={`absolute left-0 top-0 -z-[1] bg-gradient-to-b ${post.data.backgroundColor} to-zinc-50 w-full h-[550px]`}
+		>
+		</div>
+    	<div
+			class:list={`absolute left-0 top-0 -z-[1] bg-gradient-to-t from-purple-100/70 via-purple-200/70 to-zinc-50 w-full h-[550px]`}
+		>
+		</div>
+
+		<h1 class:list={`text-4xl pt-4 pb-12 ${post.data.textH1Color} lg:text-5xl`}>
+			{post.data.title}
+		</h1>
+    
+    <div id="my-iv-container" class="bg-white -mx-6 md:-mx-0 p-6 rounded-2xl">
+  <aside class="flex items-center flex-wrap gap-3 justify-between">
+          <a
+            target="_blank"
+            class="not-prose text-base bg-[#54A9EB] self-start text-white rounded-lg px-2.5 py-1"
+            href={`https://t.me/share/url?url=${Astro.site}${post.slug}&text=${post.data.title}`}
+          >
+            Поделится в <b>Telegram</b></a
+          >
+        <Date class="text-sm gap-1 text-black" data={post.data}/>
+  </aside>
+  <hr class="not-prose my-6 border-zinc-200">
+			<Content />
+		</div>
+	</main>
+</MainLayout>

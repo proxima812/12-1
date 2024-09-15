@@ -1,0 +1,13 @@
+---
+const { container_max_w } = Astro.props
+---
+
+<header class="py-5 bg-white shadow-sm">
+	<div
+		class:list={`${container_max_w ?? "max-w-6xl"} container flex justify-between items-center mx-auto px-5`}
+	>
+		<a href="/" class="text-lg font-medium text-white bg-blue rounded-lg px-2.5 py-1"
+			>12 шагов</a
+		>
+	</div>
+</header>
