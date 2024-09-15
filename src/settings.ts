@@ -1,7 +1,7 @@
 export const config = {
 	site: {
 		base: {
-			url: "https://site.com",
+			url: "https://12step.netlify.app",
 		},
 		OG: {
 			site_name: "12 шагов сайт | 12x12",
